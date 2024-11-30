@@ -1,0 +1,94 @@
+# macOS: Arquivos de sistema
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Arquivos de cache e temporários do macOS
+.Spotlight-V100
+.Trashes
+.Icon?
+/.VolumeIcon.icns
+.fseventsd
+.TemporaryItems
+.apdisk
+
+# IDEs
+/.idea/
+/*.iml
+/.vscode/
+*.classpath
+*.project
+*.settings/
+
+# Diretórios gerados por Maven ou Gradle
+/target/
+/build/
+
+# Dependências baixadas pelo Maven ou Gradle
+/.mvn/
+/.mvn/wrapper/maven-wrapper.jar
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+*.war
+*.ear
+/.gradle/
+/.gradle/
+/build/
+
+# Arquivos gerados pelo Java
+*.class
+*.jar
+*.javadoc
+*.hprof
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.bak
+*.swp
+*.lock
+
+# Arquivos de teste e cobertura de código
+/test-output/
+/out/
+/.jacoco/
+
+# Arquivos de configurações locais ou pessoais
+/.env
+*.env
+*.config
+
+# Arquivos de chave de criptografia ou credenciais
+*.key
+*.pem
+*.crt
+*.pfx
+
+# Arquivos específicos de sistemas operacionais
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.Icon?
+/.VolumeIcon.icns
+.fseventsd
+.TemporaryItems
+.apdisk
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*.swp
+
+db.properties
