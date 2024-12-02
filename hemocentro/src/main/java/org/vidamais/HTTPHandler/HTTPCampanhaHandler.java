@@ -25,6 +25,8 @@ public class HTTPCampanhaHandler implements HttpHandler {
 
         handleGet(exchange);
         handlePost(exchange);
+        handlePut(exchange);
+        handleDelete(exchange);
     }
 
     private void handleGet(HttpExchange exchange) {
@@ -78,7 +80,106 @@ public class HTTPCampanhaHandler implements HttpHandler {
 
                 Campanhas.incluir(campanha, ts);
 
-                String response = "Cadastro enviado com sucesso!";
+                String response = "Cadastro de campanha enviado com sucesso!";
+                exchange.sendResponseHeaders(200, response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+
+            } catch (ParseException e) {
+                System.err.println("Erro ao parsear data: " + e.getMessage());
+                String response = "Erro no formato de data!";
+                exchange.sendResponseHeaders(400, response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            } catch (Exception e) {
+                System.err.println("Erro ao processar JSON: " + e.getMessage());
+                String response = "Erro no processamento da requisição!";
+                exchange.sendResponseHeaders(500, response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
+        }
+    }
+
+    private void handlePut(HttpExchange exchange) throws IOException {
+        if (exchange.getRequestMethod().equalsIgnoreCase("PUT")) {
+            InputStream requestBody = exchange.getRequestBody();
+            String json = Utils.convertStreamToString(requestBody);
+
+            try {
+                System.out.println("Recebendo JSON:");
+                System.out.println(json);
+
+                JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+
+                int idCampanha = jsonObject.get("idCampanha").getAsInt();
+
+                int idHemocentro = jsonObject.get("idHemocentro").getAsInt();
+                String dataInicioStr = jsonObject.get("dataInicio").getAsString();
+                String dataFimStr = jsonObject.get("dataFim").getAsString();
+                String horarioPrimeiraColeta = jsonObject.get("horarioPrimeiraColeta").getAsString();
+                String horarioUltimaColeta = jsonObject.get("horarioUltimaColeta").getAsString();
+                int tempoColeta = jsonObject.get("tempoColeta").getAsInt();
+                int quantidadeAtendimentos = jsonObject.get("quantidadeAtendimentos").getAsInt();
+                String descricaoIncentivo = jsonObject.get("descricaoIncentivo").getAsString();
+                boolean disparoFeito = jsonObject.get("disparoFeito").getAsBoolean();
+
+                Campanha campanha = new Campanha(0, idHemocentro,
+                        dataInicioStr, dataFimStr,
+                        horarioPrimeiraColeta, horarioUltimaColeta,
+                        tempoColeta, quantidadeAtendimentos,
+                        descricaoIncentivo, disparoFeito);
+
+                JsonArray tiposSanguineos = jsonObject.get("tipoSanguineo").getAsJsonArray();
+                List<Integer> ts = new ArrayList<>();
+                for (JsonElement tipoSanguineo : tiposSanguineos)
+                    ts.add(tipoSanguineo.getAsInt());
+
+                Campanhas.atualizar(idCampanha, campanha, ts);
+
+                String response = "Cadastro de campanha atualizado com sucesso!";
+                exchange.sendResponseHeaders(200, response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+
+            } catch (ParseException e) {
+                System.err.println("Erro ao parsear data: " + e.getMessage());
+                String response = "Erro no formato de data!";
+                exchange.sendResponseHeaders(400, response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            } catch (Exception e) {
+                System.err.println("Erro ao processar JSON: " + e.getMessage());
+                String response = "Erro no processamento da requisição!";
+                exchange.sendResponseHeaders(500, response.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
+        }
+    }
+
+    private void handleDelete(HttpExchange exchange) throws IOException {
+        if (exchange.getRequestMethod().equalsIgnoreCase("DELETE")) {
+            InputStream requestBody = exchange.getRequestBody();
+            String json = Utils.convertStreamToString(requestBody);
+
+            try {
+                System.out.println("Recebendo JSON:");
+                System.out.println(json);
+
+                JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+
+                int idCampanha = jsonObject.get("idCampanha").getAsInt();
+
+                Campanhas.excluir(idCampanha);
+
+                String response = "Campanha excluída com sucesso!";
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());

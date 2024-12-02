@@ -69,7 +69,7 @@ public class Campanhas {
             int idCampanha = resultado.getInt(1);
 
             sql = "INSERT INTO TIPO_SANGUINEO_CAMPANHA " +
-                    "(ID_CAMPANHA, ID_TIPO_SANGUE) " +
+                    "(ID_CAMPANHA, ID_TIPO_SANGUINEO) " +
                     "VALUES (?, ?)";
             DBMySQLServer.STATEMENT.prepareStatement(sql);
 
@@ -116,23 +116,24 @@ public class Campanhas {
         }
     }
 
-    public static void alterar (
+    public static void atualizar (
+        int idCampanha,
         Campanha campanha,
-        List<TipoSanguineoCampanha> tiposSanguineosCampanha
+        List<Integer> tiposSanguineosCampanha
     ) throws Exception {
         if (campanha == null)
             throw new Exception ("Campanha nao fornecida");
 
-        if (!isCadastrada (campanha.getIdCampanha()))
+        if (!isCadastrada (idCampanha))
             throw new Exception ("Campanha nao cadastrada");
 
         try {
             String sql = "UPDATE CAMPANHA " +
-                    "SET ID_HEMOCENTRO=? SET DATA_INICIO=? " +
-                    "SET DATA_FIM=? SET HORARIO_INICIO=? " +
-                    "SET HORARIO_FIM=? SET ID_TEMPO_COLETA=? " +
-                    "SET QTD_ATENDIMENTOS_SIMULTANEOS=? SET INCENTIVO=? " +
-                    "SET DISPARO_CONTATO_FEITO=?" +
+                    "SET ID_HEMOCENTRO=?, DATA_INICIO=?, " +
+                    "DATA_FIM=?, HORARIO_INICIO=?, " +
+                    "HORARIO_FIM=?, ID_TEMPO_COLETA=?, " +
+                    "QTD_ATENDIMENTOS_SIMULTANEOS=?, INCENTIVO=?, " +
+                    "DISPARO_CONTATO_FEITO=? " +
                     "WHERE ID_CAMPANHA = ?";
 
             DBMySQLServer.STATEMENT.prepareStatement (sql);
@@ -146,27 +147,25 @@ public class Campanhas {
             DBMySQLServer.STATEMENT.setInt(7, campanha.getQtdAtendimentosSimultaneos());
             DBMySQLServer.STATEMENT.setString(8, campanha.getIncentivo());
             DBMySQLServer.STATEMENT.setBoolean(9, campanha.isDisparoContatoFeito());
-            DBMySQLServer.STATEMENT.setInt(10, campanha.getIdCampanha());
+            DBMySQLServer.STATEMENT.setInt(10, idCampanha);
 
             DBMySQLServer.STATEMENT.executeUpdate();
-            DBMySQLServer.STATEMENT.commit();
 
             sql = "UPDATE TIPO_SANGUINEO_CAMPANHA " +
-                    "SET ID_CAMPANHA=? ID_TIPO_SANGUE=? " +
-                    "WHERE ID_TIPO_SANGUINEO_CAMPANHA=?";
+                    "SET ID_TIPO_SANGUINEO=? " +
+                    "WHERE ID_CAMPANHA=?";
             DBMySQLServer.STATEMENT.prepareStatement(sql);
 
-            for (TipoSanguineoCampanha tsc : tiposSanguineosCampanha) {
-                DBMySQLServer.STATEMENT.setInt(1, tsc.getIdCampanha());
-                DBMySQLServer.STATEMENT.setInt(2, tsc.getIdTipoSangue());
-                DBMySQLServer.STATEMENT.setInt(3, tsc.getIdTipoSanguineoCampanha());
+            for (Integer tsc : tiposSanguineosCampanha) {
+                DBMySQLServer.STATEMENT.setInt(1, tsc);
+                DBMySQLServer.STATEMENT.setInt(2, idCampanha);
                 DBMySQLServer.STATEMENT.executeUpdate();
             }
 
             DBMySQLServer.STATEMENT.commit();
         } catch (SQLException erro) {
             DBMySQLServer.STATEMENT.rollback();
-            throw new Exception ("Erro ao atualizar dados de campanha");
+            throw new Exception ("Erro ao atualizar dados de campanha: " + erro.getMessage());
         }
     }
 
