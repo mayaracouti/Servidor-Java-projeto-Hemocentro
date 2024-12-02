@@ -4,12 +4,12 @@ public class TipoSanguineoCampanha {
 
     private int idTipoSanguineoCampanha;
     private int idCampanha;
-    private int idTipoSangue;
+    private int idTipoSanguineo;
 
-    public TipoSanguineoCampanha(int idTipoSanguineoCampanha, int idCampanha, int idTipoSangue) {
+    public TipoSanguineoCampanha(int idTipoSanguineoCampanha, int idCampanha, int idTipoSanguineo) {
         this.idTipoSanguineoCampanha = idTipoSanguineoCampanha;
         this.idCampanha = idCampanha;
-        this.idTipoSangue = idTipoSangue;
+        this.idTipoSanguineo = idTipoSanguineo;
     }
 
     public int getIdTipoSanguineoCampanha() {
@@ -28,12 +28,12 @@ public class TipoSanguineoCampanha {
         this.idCampanha = idCampanha;
     }
 
-    public int getIdTipoSangue() {
-        return idTipoSangue;
+    public int getIdTipoSanguineo() {
+        return idTipoSanguineo;
     }
 
-    public void setIdTipoSangue(int idTipoSangue) {
-        this.idTipoSangue = idTipoSangue;
+    public void setIdTipoSanguineo(int idTipoSanguineo) {
+        this.idTipoSanguineo = idTipoSanguineo;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TipoSanguineoCampanha {
         return "TipoSanguineoCampanha{" +
                 "idTipoSanguineoCampanha=" + idTipoSanguineoCampanha +
                 ", idCampanha=" + idCampanha +
-                ", idTipoSangue=" + idTipoSangue +
+                ", idTipoSanguineo=" + idTipoSanguineo +
                 '}';
     }
 
@@ -54,14 +54,14 @@ public class TipoSanguineoCampanha {
 
         if (idTipoSanguineoCampanha != that.idTipoSanguineoCampanha) return false;
         if (idCampanha != that.idCampanha) return false;
-        return idTipoSangue == that.idTipoSangue;
+        return idTipoSanguineo == that.idTipoSanguineo;
     }
 
     @Override
     public int hashCode() {
         int result = idTipoSanguineoCampanha;
         result = 31 * result + idCampanha;
-        result = 31 * result + idTipoSangue;
+        result = 31 * result + idTipoSanguineo;
         return result;
     }
 }

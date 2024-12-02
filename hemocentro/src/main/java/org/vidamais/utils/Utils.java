@@ -3,6 +3,7 @@ package org.vidamais.utils;
 import java.io.InputStream;
 
 public class Utils {
+
     public static String convertStreamToString(InputStream is) {
         try {
             java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
